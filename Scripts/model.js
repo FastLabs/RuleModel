@@ -1,0 +1,3 @@
+var model = {
+    name : 'test'
+    };
