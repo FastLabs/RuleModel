@@ -1,9 +1,15 @@
+/*namespace definition, to be refactored*/
 var model = {
     };
 model.rule = {
     };
+    /*hello*/
+    
+/**/    
 model.NammedArtifact = function (name) { 
     this.name = name || '';
+};
+model.Entity = function () {
 };
 
 model.rule.RuleArtifact = function (name) {
@@ -26,7 +32,6 @@ model.rule.RuleSet = function(name) {
         this.rules.push(rule);
        };
 };
-console.log(model);
 exports.model = model;
 
 
