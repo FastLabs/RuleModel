@@ -11,8 +11,12 @@ testRuleSet.addRule('TestRule 3');
 
 console.log(testRuleSet.name);
 
-//var x = JSON.stringify(testRuleSet);
-//console.log(x);
+var tag1 = new model.model.Tag('Test Tag');
+var tag2 = new model.model.Tag('Tag 2');
+tag1.addChild(tag2);
+var x = JSON.stringify(tag2);
+console.log(x);
+console.log(tag2.getPaths());
 
 for(i = 0, length = testRuleSet.rules.length; i<length; i++) {
     console.log(testRuleSet.rules[i]);
