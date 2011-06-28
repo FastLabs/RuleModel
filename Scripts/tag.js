@@ -1,12 +1,12 @@
- var model = require('./model.js').model;
+exports.Tag = ( function() {
+    var model = require('./model.js').model;
  
- Tag = function(name) {
-    this.base = model.NammedArtifact;
-    this.base(name);
-    var paths = [];
-    
-    var getPaths = function() {
-        return paths;
+    var Tag = function(name) {
+            this.base = model.NammedArtifact;
+            this.base(name);
+            var paths = [];
+            var getPaths = function() {
+            return paths;
         };
     var setPaths = function(newPaths) {
             paths = newPaths;
@@ -20,9 +20,9 @@
     this.getPaths = getPaths;
     this.addPath = addPath;
     this.setPaths = setPaths;
-};
+    };
 
-function Taggable() {
+    function Taggable() {
     var addChild = function (child) {
         var len = this.getPaths().length;
         if(len === 0 ) {
@@ -45,13 +45,16 @@ function Taggable() {
         this.addChild = addChild;
         this.asJSON = toJSON;
     }
-Tag.prototype = new Taggable();
-Tag.fromJSON = function (jsonSource) { 
+    Tag.prototype = new Taggable();
+    Tag.fromJSON = function (jsonSource) { 
         var parsed = JSON.parse(jsonSource);
         var tag = new Tag(parsed.name);
         tag.setPaths(parsed.paths);
         return tag;
     };
-Tag.fromStringPath = function(path) {
+    
+    Tag.fromStringPath = function(path) {
     };
-exports.Tag = Tag;
+    
+    return Tag;
+})();
