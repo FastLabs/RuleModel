@@ -1,5 +1,15 @@
+exports.TagRepository = (function () {
+    
+    var Repository = function() {
+            console.log('test');
+        };
+        
+   return Repository;
+})();
+/*
 var mongo = require('mongodb');
 console.log('trying to connect');
+
 var mongoConfig = {
     "hostname": "localhost",
     "port": 27017,
@@ -8,6 +18,7 @@ var mongoConfig = {
     "name": "",
     "db": "db"
 };
+
 var connectionString = 'mongodb://@localhost:27017/db';
 mongo.connect(connectionString, function(err, conn) {
     if (err) {
@@ -48,4 +59,4 @@ mongo.connect(connectionString, function(err, conn) {
         });
     }
 });
-console.log('done');
+console.log('done'); */
