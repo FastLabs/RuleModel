@@ -1,6 +1,8 @@
 exports.Bucket = (function() {
     var name;
     var id;
+    var fields = {};
+    
     
     function Bucket(identifier) {
             id = identifier || undefined;
@@ -13,8 +15,20 @@ exports.Bucket = (function() {
         return name;
         };
     
-    Bucket.prototype.addValue = function(value) {
-        this[value.field] = value.value;
+    Bucket.prototype.addValue = function(pair) {
+        var fieldName = pair.field;
+        var getterName = 'get' + fieldName;
+        var setterName = 'set' + fieldName;
+        var value = pair.value;
+        fields[fieldName] = value;
+        this[getterName] = function() {
+            return fields[fieldName];
+            };
+            
+        this[setterName] = function (value) {
+                fields[fieldName] = value;            
+            };
+        
         };
         
     return Bucket;
