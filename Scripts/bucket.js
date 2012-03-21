@@ -21,6 +21,7 @@ exports.Bucket = (function() {
         var setterName = 'set' + fieldName;
         var value = pair.value;
         fields[fieldName] = value;
+        // getters and setters should be properly organized, should be reuse, build the hierarhy
         this[getterName] = function() {
             return fields[fieldName];
             };
@@ -30,6 +31,6 @@ exports.Bucket = (function() {
             };
         
         };
-        
+
     return Bucket;
 })();

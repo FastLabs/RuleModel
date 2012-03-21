@@ -1,0 +1,24 @@
+[{
+    "definition": "types",
+    {
+        "Fund": { "type": "FundDomain"
+            },
+        "Manager": { "type": "ManagerDomain"
+            }
+        }
+    
+    }, 
+    {
+        "definition": "domains",
+        {
+            "FundDomain" : {"type": "literal", "source": "http:/meta/doman/fund"}
+        },
+        {   "ManagerDomain" : {"type": "literal"}
+        },
+        {"Business Day Convention": {}}
+        {"Currency" : {"USD": 840, 
+                        "EUR": 1, 
+                        "GBP": 826} }
+        
+    }
+]

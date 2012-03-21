@@ -1,0 +1,105 @@
+package com.sample
+
+/*query 'select all readings'
+    $reading: SensorReading()over window:length(30)
+end*/
+
+/*query '30 s average'
+	$average : Number() from accumulate (
+				SensorReading($temp: temperature), 
+				average($temp))
+end*/
+
+
+
+declare TemperatureThreshold
+	@author (Oleg Bulavitchi)
+	@dateOfCreation(09-Feb-2012)
+	max : Number
+end
+
+declare SensorReading
+	@role(event)
+	temperature : int 
+end
+
+declare Trend
+	@role(event)
+	value : Number
+end
+
+declare Average
+	@role(event)
+	average : Number
+end
+
+ 
+/*rule "log temperature treshold"
+    when
+        $t : TemperatureThreshold($max : max)
+    then
+        System.out.println( "temperature treshold: " + $t.getMax() );
+end*/
+
+rule "log sensor reading"
+	when
+		$s : SensorReading()
+	then
+		System.out.println("new reading available: " + $s.getTemperature());
+		insert( new Trend( Double.valueOf($s.getTemperature())));
+end
+
+
+rule 'moving average'
+	salience 1000
+	when
+		$average : Number() from accumulate (
+				SensorReading($temp: temperature) over window:length(30), 
+				average($temp))
+	then
+		insert(new Average($average));
+end
+
+
+rule 'check current and last average'
+	no-loop
+	salience 100 
+	when
+		$current: Average()
+		$previous: Average(this before $current) 
+	then
+		System.out.println(" previous: " + $previous.getAverage() + " current: " + $current.getAverage());
+		retract($previous);
+end
+
+rule 'check below average' 
+	salience 99
+	when
+		$average: Average()
+		$currentTrend: Trend(value < $average.average) 
+		$previousTrend: Trend(this before $currentTrend, value > $average.average)
+	then
+		System.out.println(" !!!! DWON to: " + $currentTrend.getValue() + " from " + $previousTrend.getValue() + " average: " + $average.getAverage());
+		retract($previousTrend);
+end
+
+rule 'check above average' 
+	salience 99
+	when
+		$average: Average()
+		$currentTrend: Trend(value > $average.average)
+		$previousTrend: Trend(this before $currentTrend, value < $average.average)
+		
+	then
+		System.out.println(" !!!! UP to: " + $currentTrend.getValue() + " from " + $previousTrend.getValue() + " average: " + $average.getAverage());
+		retract($previousTrend);
+end
+
+rule 'rule remove last trend'
+	salience 98 
+	when
+		$currentTrend: Trend()
+		$previousTrend: Trend(this before $currentTrend)
+	then
+		retract($previousTrend);
+end
